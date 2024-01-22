@@ -9,16 +9,13 @@ if input_number == "1"
   puts "新規でメモを作成します。拡張子を除いたファイル名を入力してください。"
   file_name = gets.chomp
 
-  puts "メモの内容を入力して下さい。終了したら次行にexitと入力して下さい。"
-  input_memo = []
-while  (line = gets.chomp) !='exit'
-  input_memo << line
-end
+  puts "メモの内容を入力して下さい。Ctrl+Dで保存します。"
+  input_memo = STDIN.read
+  memo = input_memo.chomp
 
   CSV.open("#{file_name}.csv", "w") do |csv|
-    csv << input_memo
+    csv << [memo]
   end
-puts "#{file_name}.csvが保存されました。"
 
 elsif input_number == "2"  # Corrected: input_number should be compared as a string
   puts "既存のメモを編集します。拡張子を除いたファイル名を入力して下さい。"
@@ -28,17 +25,13 @@ elsif input_number == "2"  # Corrected: input_number should be compared as a str
     puts row.join(',')
   end
 
-  puts "メモの内容を入力して下さい。終了したら次行にexitと入力して下さい。"
-  input_existing_memo = []
-  while  (line = gets.chomp) !='exit'
-    input_existing_memo << line
-  end
+  puts "メモの内容を入力してENTERをおして下さい。Ctrl+Dで保存します。"
+  input_existing_memo = STDIN.read
+  existing_memo = input_existing_memo.chomp
 
   CSV.open("#{existing_file_name}.csv", "a") do |csv|
-    csv << input_existing_memo
+    csv << [existing_memo]
   end
-  puts "#{file_name}.csvが追記されました。"
-
 else
-  puts "１か２のみ選べます。やり直して下さい。"
+  puts "１か２のみ選べます。"
 end
